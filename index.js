@@ -8,7 +8,7 @@ function loadStatic(app) {
     }
 }
 
-function getStatic(app) {
+function getStaticMiddleware(app) {
     return function(options) {
         var router = express.Router();
 
@@ -24,7 +24,20 @@ function getStatic(app) {
     }
 }
 
+function getStaticRoutes(app) {
+    return function() {
+        return [].concat(options).concat(app._static).map(function (route) {
+            if (typeof route === 'string') {
+                return { route: '/', dir: route };
+            } else {
+                return route;
+            }
+        });
+    }
+}
+
 module.exports = function(app, options) {
     app.loadStatic = loadStatic(app);
-    app.static = getStatic(app);
+    app.static = getStaticMiddleware(app);
+    app.getStaticRoutes = getStaticRoutes(app);
 };
