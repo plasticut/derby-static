@@ -3,6 +3,11 @@ derby-static
 Application
 ```javascript
 app.serverUse(module, require('derby-static'));
+
+// Now components can add own routes for serve static files
+app.loadStatic(__dirname + '/fonts');
+app.loadStatic({ route: '/images', dir: __dirname + '/images');
+
 app.use(require('derby-bundle-bootstrap'));
 ```
 Server:
