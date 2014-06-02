@@ -12,7 +12,7 @@ function getStaticMiddleware(app) {
     return function(options) {
         var router = express.Router();
 
-        [].concat(options).concat(app._static).forEach(function(o) {
+        [].concat(options).concat(app._static).filter(function(item) { return !!item; }).forEach(function(o) {
             if (typeof o === 'string') {
                 router.use(express.static(o));
             } else {
@@ -25,8 +25,8 @@ function getStaticMiddleware(app) {
 }
 
 function getStaticRoutes(app) {
-    return function() {
-        return [].concat(options).concat(app._static).map(function (route) {
+    return function(options) {
+        return [].concat(options).concat(app._static).filter(function(item) { return !!item; }).map(function (route) {
             if (typeof route === 'string') {
                 return { route: '/', dir: route };
             } else {
